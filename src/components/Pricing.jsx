@@ -1,12 +1,36 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 
 export default function PricingSection() {
+  const fadeInUp = {
+    initial: { opacity: 0, y: 30 },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true, amount: 0.15 },
+    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
+  };
+
+  const staggerContainer = {
+    initial: { opacity: 0 },
+    whileInView: { opacity: 1 },
+    viewport: { once: true, amount: 0.1 },
+    transition: { duration: 0.3, staggerChildren: 0.12, delayChildren: 0.15 },
+  };
+
   return (
-    <div className="w-full  py-16 px-4 transition-colors duration-300 bg-slate-50 dark:bg-[#0c0c0e] text-slate-900 dark:text-white">
+    <motion.div
+      className="w-full  py-16 px-4 transition-colors duration-300 bg-slate-50 dark:bg-[#0c0c0e] text-slate-900 dark:text-white"
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true, amount: 0.1 }}
+      transition={{ duration: 0.5 }}
+    >
       <div className="max-w-6xl mx-auto flex flex-col items-center">
-        
-        {/* Toggle Switch (Static Display) */}
-        <div className="inline-flex items-center gap-1 p-1 mb-12 rounded-full border border-slate-200 dark:border-zinc-800 bg-white dark:bg-[#16161a] shadow-sm">
+
+        {/* Toggle Switch */}
+        <motion.div
+          className="inline-flex items-center gap-1 p-1 mb-12 rounded-full border border-slate-200 dark:border-zinc-800 bg-white dark:bg-[#16161a] shadow-sm"
+          {...fadeInUp}
+        >
           <div className="px-5 py-2 text-sm font-medium rounded-full bg-slate-900 text-white dark:bg-white dark:text-black shadow">
             Monthly
           </div>
@@ -16,13 +40,23 @@ export default function PricingSection() {
               25%
             </span>
           </div>
-        </div>
+        </motion.div>
 
         {/* Pricing Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-5xl">
-          
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-5xl"
+          variants={staggerContainer}
+          initial="initial"
+          whileInView="whileInView"
+          viewport={{ once: true, amount: 0.1 }}
+        >
           {/* Card 1: Starter */}
-          <div className="flex flex-col justify-between p-8 rounded-3xl border bg-white dark:bg-[#0a0a0c] border-slate-200 dark:border-zinc-800/80 shadow-sm">
+          <motion.div
+            className="flex flex-col justify-between p-8 rounded-3xl border bg-white dark:bg-[#0a0a0c] border-slate-200 dark:border-zinc-800/80 shadow-sm"
+            variants={fadeInUp}
+            whileHover={{ y: -6, boxShadow: "0px 12px 30px rgba(0,0,0,0.1)" }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+          >
             <div>
               <div className="flex items-center justify-between mb-8">
                 <div className="flex items-center gap-3">
@@ -57,16 +91,25 @@ export default function PricingSection() {
               </ul>
             </div>
 
-            <button className="w-full group flex items-center justify-between px-5 py-3.5 rounded-xl font-medium transition-all text-sm bg-slate-100 text-slate-800 hover:bg-slate-200 dark:bg-zinc-900/60 dark:text-zinc-300 dark:hover:bg-zinc-800">
+            <motion.button
+              className="w-full group flex items-center justify-between px-5 py-3.5 rounded-xl font-medium transition-all text-sm bg-slate-100 text-slate-800 hover:bg-slate-200 dark:bg-zinc-900/60 dark:text-zinc-300 dark:hover:bg-zinc-800"
+              whileHover={{ x: 4 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            >
               <span>Choose This Plan</span>
               <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
               </svg>
-            </button>
-          </div>
+            </motion.button>
+          </motion.div>
 
           {/* Card 2: Growth */}
-          <div className="flex flex-col justify-between p-8 rounded-3xl border bg-white dark:bg-[#161618] border-slate-300 dark:border-zinc-700 shadow-xl ring-2 ring-slate-400/20 dark:ring-zinc-700/50 scale-100 md:scale-[1.02]">
+          <motion.div
+            className="flex flex-col justify-between p-8 rounded-3xl border bg-white dark:bg-[#161618] border-slate-300 dark:border-zinc-700 shadow-xl ring-2 ring-slate-400/20 dark:ring-zinc-700/50 scale-100 md:scale-[1.02]"
+            variants={fadeInUp}
+            whileHover={{ y: -6, boxShadow: "0px 12px 40px rgba(0,0,0,0.15)" }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+          >
             <div>
               <div className="flex items-center justify-between mb-8">
                 <div className="flex items-center gap-3">
@@ -101,16 +144,25 @@ export default function PricingSection() {
               </ul>
             </div>
 
-            <button className="w-full group flex items-center justify-between px-5 py-3.5 rounded-xl font-medium transition-all text-sm bg-slate-900 text-white dark:bg-white dark:text-black hover:bg-slate-800 dark:hover:bg-zinc-100">
+            <motion.button
+              className="w-full group flex items-center justify-between px-5 py-3.5 rounded-xl font-medium transition-all text-sm bg-slate-900 text-white dark:bg-white dark:text-black hover:bg-slate-800 dark:hover:bg-zinc-100"
+              whileHover={{ x: 4 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            >
               <span>Choose This Plan</span>
               <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
               </svg>
-            </button>
-          </div>
+            </motion.button>
+          </motion.div>
 
           {/* Card 3: Premium */}
-          <div className="flex flex-col justify-between p-8 rounded-3xl border bg-white dark:bg-[#0a0a0c] border-slate-200 dark:border-zinc-800/80 shadow-sm">
+          <motion.div
+            className="flex flex-col justify-between p-8 rounded-3xl border bg-white dark:bg-[#0a0a0c] border-slate-200 dark:border-zinc-800/80 shadow-sm"
+            variants={fadeInUp}
+            whileHover={{ y: -6, boxShadow: "0px 12px 30px rgba(0,0,0,0.1)" }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+          >
             <div>
               <div className="flex items-center justify-between mb-8">
                 <div className="flex items-center gap-3">
@@ -145,16 +197,19 @@ export default function PricingSection() {
               </ul>
             </div>
 
-            <button className="w-full group flex items-center justify-between px-5 py-3.5 rounded-xl font-medium transition-all text-sm bg-slate-100 text-slate-800 hover:bg-slate-200 dark:bg-zinc-900/60 dark:text-zinc-300 dark:hover:bg-zinc-800">
+            <motion.button
+              className="w-full group flex items-center justify-between px-5 py-3.5 rounded-xl font-medium transition-all text-sm bg-slate-100 text-slate-800 hover:bg-slate-200 dark:bg-zinc-900/60 dark:text-zinc-300 dark:hover:bg-zinc-800"
+              whileHover={{ x: 4 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            >
               <span>Choose This Plan</span>
               <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
               </svg>
-            </button>
-          </div>
-
-        </div>
+            </motion.button>
+          </motion.div>
+        </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 }

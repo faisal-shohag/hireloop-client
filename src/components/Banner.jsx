@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { motion } from "framer-motion";
 import { Search, MapPin, BriefcaseBusiness, BarChart2, SearchCheck, Star } from "lucide-react";
 import Image from "next/image";
 
@@ -13,9 +14,24 @@ const stats = [
   { icon: <Star size={20} />, value: "97%", label: "Satisfication Rate" },
 ];
 
+const fadeInUp = {
+  initial: { opacity: 0, y: 40 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] },
+};
+
+const staggerContainer = {
+  animate: {
+    transition: { staggerChildren: 0.1 },
+  },
+};
+
 const Banner = () => {
   return (
-    <section className="relative flex flex-col items-center justify-between min-h-screen px-4 pb-12 overflow-hidden bg-white dark:bg-gray-950">
+    <motion.section
+      className="relative flex flex-col items-center justify-between min-h-screen px-4 pb-12 overflow-hidden bg-white dark:bg-gray-950"
+      {...fadeInUp}
+    >
       {/* Globe background */}
       <Image
         src="/globe.png"
@@ -26,9 +42,17 @@ const Banner = () => {
       />
 
       {/* Top search content */}
-      <div className="relative z-10 flex flex-col items-center text-center gap-6 pt-20">
+      <motion.div
+        className="relative z-10 flex flex-col items-center text-center gap-6 pt-20"
+        variants={staggerContainer}
+        initial="initial"
+        animate="animate"
+      >
         {/* Badge */}
-        <div className="flex items-center gap-2 bg-gray-200 dark:bg-gray-900 text-gray-900 dark:text-white text-sm font-semibold px-5 py-2 rounded-full">
+        <motion.div
+          className="flex items-center gap-2 bg-gray-200 dark:bg-gray-900 text-gray-900 dark:text-white text-sm font-semibold px-5 py-2 rounded-full"
+          variants={fadeInUp}
+        >
           <span>💼</span>
           <span>
             50,000+{" "}
@@ -36,20 +60,29 @@ const Banner = () => {
               New Jobs This Month
             </span>
           </span>
-        </div>
+        </motion.div>
 
         {/* Heading */}
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white max-w-3xl leading-tight">
+        <motion.h1
+          className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white max-w-3xl leading-tight"
+          variants={fadeInUp}
+        >
           Find Your <span className="text-indigo-500">Dream Job</span> <br /> With HireLoop
-        </h1>
+        </motion.h1>
 
         {/* Subtext */}
-        <p className="text-gray-500 dark:text-gray-400 max-w-xl text-base md:text-lg">
+        <motion.p
+          className="text-gray-500 dark:text-gray-400 max-w-xl text-base md:text-lg"
+          variants={fadeInUp}
+        >
           Connect with top companies and discover opportunities that match your skills and aspirations.
-        </p>
+        </motion.p>
 
         {/* Search Bar */}
-        <div className="flex items-center w-full max-w-2xl bg-gray-100 dark:bg-gray-900 rounded-full px-4 py-2 gap-2 border border-gray-200 dark:border-transparent">
+        <motion.div
+          className="flex items-center w-full max-w-2xl bg-gray-100 dark:bg-gray-900 rounded-full px-4 py-2 gap-2 border border-gray-200 dark:border-transparent"
+          variants={fadeInUp}
+        >
           <Search className="text-gray-400 shrink-0" size={18} />
           <input
             type="text"
@@ -66,23 +99,35 @@ const Banner = () => {
           <button className="bg-indigo-500 hover:bg-indigo-600 text-white p-2 rounded-full shrink-0 transition-colors">
             <Search size={18} />
           </button>
-        </div>
+        </motion.div>
 
         {/* Popular Tags */}
-        <div className="flex flex-wrap justify-center gap-2">
+        <motion.div
+          className="flex flex-wrap justify-center gap-2"
+          variants={staggerContainer}
+          initial="initial"
+          animate="animate"
+        >
           {popularTags.map((tag) => (
-            <button
+            <motion.button
               key={tag}
               className="border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 bg-white/70 dark:bg-transparent text-sm px-4 py-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              variants={fadeInUp}
             >
               {tag}
-            </button>
+            </motion.button>
           ))}
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
 
       {/* Bottom stats content */}
-      <div className="relative z-10 flex flex-col items-center gap-8 w-full">
+      <motion.div
+        className="relative z-10 flex flex-col items-center gap-8 w-full"
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.4 }}
+      >
         <p className="text-gray-700 dark:text-white text-lg md:text-xl text-center">
           Assisting over <span className="font-bold">15,000 job seekers</span>
           <br /> find their dream positions.
@@ -90,20 +135,24 @@ const Banner = () => {
 
         <div className="w-full max-w-4xl grid grid-cols-4 gap-3">
           {stats.map(({ icon, value, label }) => (
-            <div
+            <motion.div
               key={label}
               className="bg-gray-100 dark:bg-gray-900 border border-gray-200 dark:border-transparent rounded-2xl p-4 flex flex-col gap-4 text-gray-900 dark:text-white"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             >
               <span className="text-gray-400">{icon}</span>
               <div>
                 <p className="text-3xl font-bold">{value}</p>
                 <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">{label}</p>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
-      </div>
-    </section>
+      </motion.div>
+    </motion.section>
   );
 };
 
