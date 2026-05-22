@@ -1,7 +1,4 @@
-# HireLoop — Framer Motion গাইড 🇧🇩
-
-> এই ডকুমেন্টটি একদম নতুন শিক্ষার্থীদের জন্য লেখা হয়েছে। এখানে ব্যাখ্যা করা হয়েছে যে এই প্রজেক্টে **Framer Motion** কীভাবে ব্যবহার করা হয়েছে এবং এটি কীভাবে কাজ করে।
-
+# HireLoop — Framer Motion গাইড
 ---
 
 ## Framer Motion কী?
@@ -16,7 +13,7 @@ Framer Motion হলো React-এর জন্য একটি **animation libra
 npm install framer-motion
 ```
 
-এই প্রজেক্টে ইতিমধ্যে `package.json`-এ যোগ করা আছে:
+এই প্রজেক্টে ইতিমধ্যে `package.json`-এ add করা আছে:
 
 ```json
 "framer-motion": "^12.40.0"
@@ -240,5 +237,3 @@ const fadeInUp = {
 - `whileInView` ব্যবহার করলে `viewport={{ once: true }}` দেওয়া ভালো, নাহলে scroll করলে বারবার animate হবে।
 
 ---
-
-*এই প্রজেক্ট: HireLoop — AI-native career platform*
