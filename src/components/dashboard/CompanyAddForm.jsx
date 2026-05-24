@@ -1,8 +1,9 @@
 "use client";
 import { ApiClient } from "@/lib/api-client";
+import { authClient } from "@/lib/auth-client";
 import { getUserClient } from "@/lib/getUserClient";
 import { imageUploader } from "@/lib/imageUploader";
-import { Envelope, Plus } from "@gravity-ui/icons";
+import { Plus } from "@gravity-ui/icons";
 import {
   Button,
   Input,
@@ -16,8 +17,7 @@ import {
 } from "@heroui/react";
 import toast from "react-hot-toast";
 
-export function CompanyAddModal() {
-  const user = getUserClient();
+export function CompanyAddModal({user}) {
 
   const onSubmit = async (e) => {
     e.preventDefault();

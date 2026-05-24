@@ -3,7 +3,6 @@ import { ApiServer } from "@/lib/api-server";
 import { getUserServer } from "@/lib/getUserServer";
 import { Button, Surface } from "@heroui/react";
 import Image from "next/image";
-import Link from "next/link";
 import { Globe, MapPin, Users, Briefcase } from "lucide-react";
 
 const RecruiterCompanyPage = async () => {
@@ -18,7 +17,7 @@ const RecruiterCompanyPage = async () => {
           <h1 className="text-2xl font-bold tracking-tight">My Companies</h1>
           <p className="text-sm text-default-500">Manage your registered companies and their verification states.</p>
         </div>
-        <CompanyAddModal />
+        <CompanyAddModal user={user}/>
       </div>
 
       {!companies || companies.length === 0 ? (
@@ -45,6 +44,7 @@ const RecruiterCompanyPage = async () => {
                       <Image
                         src={company.logo}
                         alt={`${company.companyName}`}
+                        referrerPolicy="no-referrer"
                         height={100}
                         width={100}
                         loading="eager"

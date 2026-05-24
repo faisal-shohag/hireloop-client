@@ -13,12 +13,6 @@ export const auth = betterAuth({
   database: mongodbAdapter(db, {
     client,
   }),
-  // socialProviders: {
-  //   google: {
-  //     clientId: process.env.GOOGLE_CLIENT_ID,
-  //     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  //   },
-  // },
   session: {
     cookieCache: {
       enabled: true,
@@ -30,6 +24,9 @@ export const auth = betterAuth({
     additionalFields: {
       role: {
         default: "seeker"  // role: seeker/recruiter/admin
+      },
+      plan: {
+        default: "free"   // plan: free/pro
       }
     }
   },

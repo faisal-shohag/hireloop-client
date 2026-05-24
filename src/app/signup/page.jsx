@@ -1,239 +1,187 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { Card, Button, Link, TextField, Label, InputGroup, Input, Select, ListBox } from "@heroui/react";
+import { Eye, EyeSlash, Person, At, ShieldKeyhole } from "@gravity-ui/icons";
 import { signUp } from "@/lib/auth-client";
-import { Eye, EyeOff, ArrowRight } from "lucide-react";
-import Image from "next/image";
-import {
-  Button,
-  Description,
-  FieldError,
-  Form,
-  Input,
-  Label,
-  TextField,
-} from "@heroui/react";
-import { Card } from "@heroui/react";
 
-export default function SignUpPage() {
-  const router = useRouter();
-  const [form, setForm] = useState({
-    name: "",
-    image: "",
-    email: "",
-    password: "",
-    role: "seeker",
-  });
-  const [showPw, setShowPw] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+export default function SignupPage() {
+    // Form fields
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [role, setRole] = useState(null); // Managed via standard key/string matching
+    const [password, setPassword] = useState("");
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
-    setLoading(true);
-    console.log(form)
-    try {
-      const result = await signUp.email({
-        name: form.name,
-        image: form.image,
-        email: form.email,
-        password: form.password,
-        role: form.role,
-      });
-      if (result.error) {
-        setError(result.error.message || "Sign up failed");
-      } else {
-        router.push("/dashboard");
-      }
-    } catch (err) {
-      setError(err.message || "Sign up failed");
-    } finally {
-      setLoading(false);
-    }
-  };
+    // UI States
+    const [isVisible, setIsVisible] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState("");
+    const [success, setSuccess] = useState("");
 
-  return (
-    <div className="min-h-screen flex items-center justify-center px-4">
-      <div className="w-full max-w-md">
-        {/* Logo */}
-        <div className="text-center mb-8">
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2 font-bold text-xl mb-6"
-          >
-            <Image
-              loading="eager"
-              className="object-cover h-auto w-auto"
-              width={100}
-              height={40}
-              style={{ width: "auto", height: "auto" }}
-              alt="logo"
-              src={"/logo.png"}
-            />
-          </Link>
-          <h1 className="text-2xl font-bold ">Create your account</h1>
-          <p className="mt-1 text-muted text-sm">
-            Start finding your dream job today
-          </p>
+    const toggleVisibility = () => setIsVisible(!isVisible);
+
+    const handleSignup = async (e) => {
+        e.preventDefault();
+
+        if (!role) {
+            setError("Please select a role before registering.");
+            return;
+        }
+
+        setError("");
+        setSuccess("");
+        setIsLoading(true);
+
+        try {
+            const { data, error: authError } = await signUp.email({
+                email,
+                password,
+                name,
+                role, // Payload value captures "seeker" or "recruiter"
+                callbackURL: "/",
+            });
+
+            if (authError) {
+                setError(authError.message || "Something went wrong during signup.");
+            } else {
+                setSuccess("Account created successfully! Welcome.");
+                setName("");
+                setEmail("");
+                setPassword("");
+                setRole(null);
+            }
+        } catch (err) {
+            setError("An unexpected network error occurred.");
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    return (
+        <div className="flex min-h-screen items-center justify-center bg-zinc-50 dark:bg-zinc-950 px-4">
+            <Card className="w-full max-w-md p-6 shadow-sm border border-zinc-200 dark:border-zinc-800">
+
+                {/* Header Container */}
+                <div className="flex flex-col items-center justify-center gap-1 pb-6 border-b border-zinc-100 dark:border-zinc-800 mb-6 text-center">
+                    <h1 className="text-2xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-50">Create an account</h1>
+                    <p className="text-sm text-zinc-600 dark:text-zinc-400">Fill in the fields below to get started</p>
+                </div>
+
+                {/* Form Body */}
+                <form onSubmit={handleSignup} className="flex flex-col gap-5">
+
+                    {/* Name Field */}
+                    <TextField isRequired name="name" className="flex flex-col gap-1.5">
+                        <Label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">Name</Label>
+                        <InputGroup className="flex items-center gap-2 border border-zinc-200 dark:border-zinc-800 rounded-xl px-3 bg-zinc-50 dark:bg-zinc-900 focus-within:border-primary transition-colors">
+                            <Person className="text-zinc-400 pointer-events-none" size={16} />
+                            <Input
+                                type="text"
+                                placeholder="Enter your full name"
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                                className="w-full bg-transparent py-2 text-sm outline-none border-none text-zinc-900 dark:text-zinc-100"
+                            />
+                        </InputGroup>
+                    </TextField>
+
+                    {/* Email Field */}
+                    <TextField isRequired name="email" type="email" className="flex flex-col gap-1.5">
+                        <Label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">Email Address</Label>
+                        <InputGroup className="flex items-center gap-2 border border-zinc-200 dark:border-zinc-800 rounded-xl px-3 bg-zinc-50 dark:bg-zinc-900 focus-within:border-primary transition-colors">
+                            <At className="text-zinc-400 pointer-events-none" size={16} />
+                            <Input
+                                placeholder="you@example.com"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                className="w-full bg-transparent py-2 text-sm outline-none border-none text-zinc-900 dark:text-zinc-100"
+                            />
+                        </InputGroup>
+                    </TextField>
+
+                    {/* Role Select Field */}
+                    <div className="flex flex-col gap-1.5">
+                        <Label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">Join as a</Label>
+                        <Select 
+                            isRequired
+                            placeholder="Choose your role"
+                            value={role}
+                            onChange={setRole}
+                        >
+                            <Select.Trigger className="flex w-full items-center justify-between border border-zinc-200 dark:border-zinc-800 rounded-xl px-3 bg-zinc-50 dark:bg-zinc-900 text-sm py-2 text-zinc-900 dark:text-zinc-100 outline-none transition-colors focus-within:border-primary min-h-10">
+                                <Select.Value />
+                                <Select.Indicator />
+                            </Select.Trigger>
+                            <Select.Popover className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-md mt-1 p-1">
+                                <ListBox>
+                                    <ListBox.Item id="seeker" textValue="Seeker" className="px-3 py-2 text-sm rounded-lg cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-900 dark:text-zinc-100">
+                                        Seeker
+                                    </ListBox.Item>
+                                    <ListBox.Item id="recruiter" textValue="Recruiter" className="px-3 py-2 text-sm rounded-lg cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-900 dark:text-zinc-100">
+                                        Recruiter
+                                    </ListBox.Item>
+                                </ListBox>
+                            </Select.Popover>
+                        </Select>
+                    </div>
+
+                    {/* Password Field */}
+                    <TextField isRequired name="password" className="flex flex-col gap-1.5">
+                        <Label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">Password</Label>
+                        <InputGroup className="flex items-center gap-2 border border-zinc-200 dark:border-zinc-800 rounded-xl px-3 bg-zinc-50 dark:bg-zinc-900 focus-within:border-primary transition-colors">
+                            <ShieldKeyhole className="text-zinc-400 pointer-events-none" size={16} />
+                            <Input
+                                type={isVisible ? "text" : "password"}
+                                placeholder="Choose a password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                className="w-full bg-transparent py-2 text-sm outline-none border-none text-zinc-900 dark:text-zinc-100"
+                            />
+                            <button
+                                className="focus:outline-none text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 transition"
+                                type="button"
+                                onClick={toggleVisibility}
+                                aria-label="toggle password visibility"
+                            >
+                                {isVisible ? <EyeSlash size={18} /> : <Eye size={18} />}
+                            </button>
+                        </InputGroup>
+                    </TextField>
+
+                    {/* Dynamic Status Badges */}
+                    {error && (
+                        <div className="p-3.5 text-xs font-medium rounded-xl bg-red-100/60 dark:bg-red-950/50 text-red-700 dark:text-red-400 border border-red-200 dark:border-red-900">
+                            <span className="font-semibold">Error:</span> {error}
+                        </div>
+                    )}
+
+                    {success && (
+                        <div className="p-3.5 text-xs font-medium rounded-xl bg-emerald-100/60 dark:bg-emerald-950/50 text-emerald-800 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-900">
+                            <span className="font-semibold">Success:</span> {success}
+                        </div>
+                    )}
+
+                    {/* Action Button */}
+                    <Button
+                        type="submit"
+                        color="primary"
+                        className="w-full font-semibold rounded-xl text-sm h-12"
+                        isLoading={isLoading}
+                        isDisabled={isLoading}
+                    >
+                        Sign Up
+                    </Button>
+
+                    {/* Navigation Option */}
+                    <div className="text-center pt-4 border-t border-zinc-100 dark:border-zinc-800 mt-2 text-sm text-zinc-600 dark:text-zinc-400">
+                        Already have an account?{" "}
+                        <Link href="/auth/signin" className="font-medium cursor-pointer text-sm text-blue-600 dark:text-blue-400">
+                            Sign in instead
+                        </Link>
+                    </div>
+
+                </form>
+            </Card>
         </div>
-
-        <Card className="border">
-          <Form
-            className="flex flex-col gap-4 w-full"
-            onSubmit={(e) => {
-              e.preventDefault();
-              const formData = new FormData(e.currentTarget);
-              setForm({
-                name: formData.get("name"),
-                image: formData.get("image"),
-                email: formData.get("email"),
-                password: formData.get("password"),
-                role: formData.get("role"),
-              });
-              handleSubmit(e);
-            }}
-          >
-            {error && (
-              <div className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400">
-                {error}
-              </div>
-            )}
-
-            {/* Role selector */}
-            <div>
-              <Label>I am a...</Label>
-              <div className="grid grid-cols-2 gap-3 mt-1.5">
-                {[
-                  { value: "seeker", label: "Job Seeker", emoji: "🔍" },
-                  { value: "recruiter", label: "Recruiter", emoji: "🏢" },
-                ].map((r) => (
-                  <button
-                    key={r.value}
-                    type="button"
-                    onClick={() => setForm((f) => ({ ...f, role: r.value }))}
-                    className={`flex flex-col items-center gap-1.5 rounded-xl border py-3 text-sm font-medium transition-colors ${
-                      form.role === r.value
-                        ? "border bg-indigo-500/10 text-indigo-500 font-bold"
-                        : "border text-gray-400 hover:border-gray-600"
-                    }`}
-                  >
-                    <span className="text-xl">{r.emoji}</span>
-                    {r.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <TextField
-              isRequired
-              name="name"
-              type="text"
-              validate={(value) => {
-                if (value.length < 2) {
-                  return "Name must be at least 2 characters";
-                }
-                return null;
-              }}
-            >
-              <Label>Full Name</Label>
-              <Input placeholder="John Doe" />
-              <FieldError />
-            </TextField>
-
-              <TextField
-              isRequired
-              name="image"
-              type="url"
-             
-            >
-              <Label>Image URL</Label>
-              <Input placeholder="Image URL" />
-              <FieldError />
-            </TextField>
-
-            <TextField
-              isRequired
-              name="email"
-              type="email"
-              validate={(value) => {
-                if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(value)) {
-                  return "Please enter a valid email address";
-                }
-                return null;
-              }}
-            >
-              <Label>Email</Label>
-              <Input placeholder="you@example.com" />
-              <FieldError />
-            </TextField>
-
-            <TextField
-              isRequired
-              minLength={8}
-              name="password"
-              placeholder="Min. 8 characters"
-              type={showPw ? "text" : "password"}
-              validate={(value) => {
-                if (value.length < 8) {
-                  return "Password must be at least 8 characters";
-                }
-                if (!/[A-Z]/.test(value)) {
-                  return "Password must contain at least one uppercase letter";
-                }
-                if (!/[0-9]/.test(value)) {
-                  return "Password must contain at least one number";
-                }
-                return null;
-              }}
-            >
-              <Label>Password</Label>
-              <div className="relative flex gap-2 w-full">
-                <Input className={"w-full"}  type={showPw ? "text" : "password"} />
-                <Button type="button" onClick={() => setShowPw(!showPw)}>
-                  {showPw ? (
-                    <EyeOff className="h-4 w-4" />
-                  ) : (
-                    <Eye className="h-4 w-4" />
-                  )}
-                </Button>
-              </div>
-              <Description>
-                Must be at least 8 characters with 1 uppercase and 1 number
-              </Description>
-              <FieldError />
-            </TextField>
-
-            <div className="flex gap-2">
-              <Button
-                type="submit"
-                disabled={loading}
-                className="flex-1 flex items-center justify-center gap-2 rounded-xl bg-indigo-600 py-3 font-semibold text-white hover:bg-indigo-500 disabled:opacity-50 transition-colors"
-              >
-                {loading ? (
-                  "Creating account..."
-                ) : (
-                  <>
-                    Get Started <ArrowRight className="h-4 w-4" />
-                  </>
-                )}
-              </Button>
-            </div>
-
-            <p className="text-center text-sm text-gray-500">
-              Already have an account?{" "}
-              <Link
-                href="/signin"
-                className="text-indigo-400 hover:text-indigo-300 font-medium"
-              >
-                Sign in
-              </Link>
-            </p>
-          </Form>
-        </Card>
-      </div>
-    </div>
-  );
+    );
 }
