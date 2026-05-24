@@ -110,7 +110,7 @@ export default function SignInPage() {
               minLength={8}
               name="password"
               placeholder="Enter password"
-              type={showPw ? "text" : "password"}
+            
               validate={(value) => {
                 if (value.length < 8) {
                   return "Password must be at least 8 characters";
@@ -129,7 +129,7 @@ export default function SignInPage() {
                 <Input
                   className={"w-full"}
                
-                  type="password"
+                   type={showPw ? "text" : "password"}
                 />
                 <Button type="button" onClick={() => setShowPw(!showPw)}>
                   {showPw ? (
