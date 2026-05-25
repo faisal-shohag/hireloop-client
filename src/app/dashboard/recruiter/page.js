@@ -1,11 +1,7 @@
 "use client";
-
 import RecentApplications from "@/components/dashboard/RecentApplications";
 import StatsRow from "@/components/dashboard/StateRow";
 import TopCompanies from "@/components/dashboard/TopCompanies";
-
-
-
 export default function RecruiterDashboardOverviewPage({ adminName = "Alex Sterling" }) {
     return (
         <div className="min-h-screen w-full bg-zinc-50 dark:bg-zinc-950 px-6 py-8 space-y-8 transition-colors duration-300">
