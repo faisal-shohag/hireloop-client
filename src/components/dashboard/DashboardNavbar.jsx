@@ -3,15 +3,12 @@
 import { useState } from "react";
 import { Search, Bell, ChevronDown, Sparkles } from "lucide-react";
 import { Avatar } from "@heroui/react";
+import { authClient } from "@/lib/auth-client";
 
-export default function AdminTopNavbar({ 
-    admin = { 
-        name: "Alex Sterling", 
-        role: "Principal Admin", 
-        company: "HireLoop Global", 
-        avatarUrl: "" 
-    } 
-}) {
+export default function AdminTopNavbar() {
+    const { data: session, isPending } = authClient.useSession();
+    const user = session?.user;
+
     const [searchFocused, setSearchFocused] = useState(false);
     const [hasNotifications, setHasNotifications] = useState(true);
 
@@ -68,36 +65,51 @@ export default function AdminTopNavbar({
                     {/* Gradient Layout Divider */}
                     <div className="h-6 w-px bg-gradient-to-b from-transparent via-zinc-200 dark:via-zinc-800 to-transparent" />
 
-                    {/* User Profile Trigger */}
-                    <button className="group flex items-center gap-3 rounded-xl border border-transparent p-1.5 text-left outline-none transition-all hover:bg-zinc-100/80 dark:hover:bg-zinc-900/50 hover:border-zinc-200/40 dark:hover:border-zinc-800/40">
-                        
-                        {/* Hero UI Avatar Wrapper */}
-                        <div className="relative">
-                            <Avatar className="w-9 h-9 text-xs font-semibold bg-gradient-to-br from-blue-600 to-indigo-600 text-white rounded-lg">
-                                {admin.avatarUrl ? (
-                                    <Avatar.Image src={admin.avatarUrl} alt={admin.name} />
-                                ) : (
-                                    <Avatar.Fallback>
-                                        {admin.name.split(" ").map(n => n[0]).join("")}
-                                    </Avatar.Fallback>
-                                )}
-                            </Avatar>
-                            {/* Presence Badge */}
-                            <span className="absolute bottom-0 right-0 block h-2.5 w-2.5 rounded-full bg-emerald-500 ring-2 ring-white dark:ring-zinc-950 translate-x-0.5 translate-y-0.5" />
+                    {/* User Profile Trigger / Loading Skeleton */}
+                    {isPending ? (
+                        <div className="flex items-center gap-3 p-1.5 animate-pulse">
+                            <div className="w-9 h-9 bg-zinc-200 dark:bg-zinc-800 rounded-lg" />
+                            <div className="hidden md:block space-y-1.5">
+                                <div className="h-3.5 w-24 bg-zinc-200 dark:bg-zinc-800 rounded" />
+                                <div className="h-2.5 w-16 bg-zinc-200 dark:bg-zinc-800 rounded" />
+                            </div>
                         </div>
+                    ) : user ? (
+                        <button className="group flex items-center gap-3 rounded-xl border border-transparent p-1.5 text-left outline-none transition-all hover:bg-zinc-100/80 dark:hover:bg-zinc-900/50 hover:border-zinc-200/40 dark:hover:border-zinc-800/40">
+                            
+                            {/* Hero UI Avatar Wrapper */}
+                            <div className="relative">
+                                <Avatar className="w-9 h-9 text-xs font-semibold bg-gradient-to-br from-blue-600 to-indigo-600 text-white rounded-lg">
+                                    {user.image ? (
+                                        <Avatar.Image src={user.image} alt={user.name || "User"} />
+                                    ) : (
+                                        <Avatar.Fallback>
+                                            {user.name ? user.name.split(" ").map(n => n[0]).join("").toUpperCase() : "U"}
+                                        </Avatar.Fallback>
+                                    )}
+                                </Avatar>
+                                {/* Presence Status Badge */}
+                                <span className="absolute bottom-0 right-0 block h-2.5 w-2.5 rounded-full bg-emerald-500 ring-2 ring-white dark:ring-zinc-950 translate-x-0.5 translate-y-0.5" />
+                            </div>
 
-                        {/* Profile Meta Info */}
-                        <div className="hidden md:block min-w-0">
-                            <p className="truncate text-sm font-medium text-zinc-700 dark:text-zinc-200 group-hover:text-zinc-900 dark:group-hover:text-zinc-100 transition-colors">
-                                {admin.name}
-                            </p>
-                            <p className="truncate text-xs text-zinc-400 dark:text-zinc-500 font-normal leading-none mt-0.5">
-                                {admin.company}
-                            </p>
+                            {/* Profile Meta Info */}
+                            <div className="hidden md:block min-w-0">
+                                <p className="truncate text-sm font-medium text-zinc-700 dark:text-zinc-200 group-hover:text-zinc-900 dark:group-hover:text-zinc-100 transition-colors">
+                                    {user.name || "Anonymous User"}
+                                </p>
+                                <p className="truncate text-xs text-zinc-400 dark:text-zinc-500 font-normal leading-none mt-0.5">
+                                    {/* Fallback to role description if company property doesn't exist explicitly inside user session */}
+                                    {user.company || user.role || "Portal Partner"}
+                                </p>
+                            </div>
+
+                            <ChevronDown className="hidden md:block h-4 w-4 text-zinc-400 dark:text-zinc-500 transition-transform duration-200 group-hover:text-zinc-600 dark:group-hover:text-zinc-400 group-hover:translate-y-0.5" />
+                        </button>
+                    ) : (
+                        <div className="text-xs text-zinc-400 dark:text-zinc-500 font-medium px-2 py-1 border border-dashed border-zinc-200 dark:border-zinc-800 rounded-lg">
+                            No Session
                         </div>
-
-                        <ChevronDown className="hidden md:block h-4 w-4 text-zinc-400 dark:text-zinc-500 transition-transform duration-200 group-hover:text-zinc-600 dark:group-hover:text-zinc-400 group-hover:translate-y-0.5" />
-                    </button>
+                    )}
 
                 </div>
             </div>
