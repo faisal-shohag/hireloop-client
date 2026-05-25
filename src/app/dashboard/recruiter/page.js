@@ -1,34 +1,31 @@
 "use client";
 
-import { useSession } from "@/lib/auth-client";
+import RecentApplications from "@/components/dashboard/RecentApplications";
+import StatsRow from "@/components/dashboard/StateRow";
+import TopCompanies from "@/components/dashboard/TopCompanies";
 
-export default function RecruiterDashboard() {
-  const { data: session } = useSession();
 
-  return (
-    <div className="space-y-6">
-      <div>
-        <h2 className="text-2xl font-bold">Welcome back, {session?.user?.name}!</h2>
-        <p className="text-muted-foreground">Find the best candidates for your open positions</p>
-      </div>
 
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        <div className="border rounded-lg p-4">
-          <h3 className="font-semibold mb-2">Active Jobs</h3>
-          <p className="text-3xl font-bold">0</p>
-          <p className="text-sm text-muted-foreground">Jobs currently posting</p>
+export default function RecruiterDashboardOverviewPage({ adminName = "Alex Sterling" }) {
+    return (
+        <div className="min-h-screen w-full bg-zinc-50 dark:bg-zinc-950 px-6 py-8 space-y-8 transition-colors duration-300">
+            
+            {/* Header Greeting Segment */}
+            <div>
+                <h1 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50 sm:text-3xl">
+                    Welcome back, {adminName}
+                </h1>
+            </div>
+
+            {/* Metrics Counter Section Row */}
+            <StatsRow />
+
+            {/* Lower Complex Data Layout Modules Section */}
+            <div className="flex flex-col lg:flex-row gap-6 items-stretch">
+                <RecentApplications />
+                <TopCompanies />
+            </div>
+
         </div>
-        <div className="border rounded-lg p-4">
-          <h3 className="font-semibold mb-2">Applications</h3>
-          <p className="text-3xl font-bold">0</p>
-          <p className="text-sm text-muted-foreground">Total applications received</p>
-        </div>
-        <div className="border rounded-lg p-4">
-          <h3 className="font-semibold mb-2">Profile Views</h3>
-          <p className="text-3xl font-bold">0</p>
-          <p className="text-sm text-muted-foreground">Company profile views</p>
-        </div>
-      </div>
-    </div>
-  );
+    );
 }
