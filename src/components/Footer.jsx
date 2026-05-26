@@ -1,5 +1,4 @@
 import React from "react";
-import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { FaFacebook } from "react-icons/fa";
@@ -12,36 +11,15 @@ const links = {
   Resources: ["Brand Guideline", "Newsroom"],
 };
 
-const fadeInUp = {
-  initial: { opacity: 0, y: 20 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, amount: 0.1 },
-  transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
-};
-
-const staggerContainer = {
-  initial: { opacity: 0 },
-  whileInView: { opacity: 1 },
-  viewport: { once: true, amount: 0.1 },
-  transition: { duration: 0.3, staggerChildren: 0.08, delayChildren: 0.1 },
-};
 
 const Footer = () => {
   return (
-    <motion.footer
+    <footer
       className="bg-gray-950 dark:bg-gray-950 text-gray-400 px-8 md:px-16 pt-12 pb-6"
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      viewport={{ once: true, amount: 0.1 }}
-      transition={{ duration: 0.5 }}
     >
       {/* Top row */}
-      <motion.div
+      <div
         className="flex flex-col md:flex-row justify-between gap-12 mb-12"
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.1 }}
-        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
       >
         {/* Brand */}
         <div className="max-w-55">
@@ -52,15 +30,11 @@ const Footer = () => {
         </div>
 
         {/* Link columns */}
-        <motion.div
+        <div
           className="flex gap-16 flex-wrap"
-          variants={staggerContainer}
-          initial="initial"
-          whileInView="whileInView"
-          viewport={{ once: true, amount: 0.1 }}
         >
           {Object.entries(links).map(([category, items]) => (
-            <motion.div key={category} variants={fadeInUp}>
+            <div key={category}>
               <h4 className="text-indigo-500 font-semibold mb-4 text-sm">{category}</h4>
               <ul className="flex flex-col gap-3">
                 {items.map((item) => (
@@ -74,26 +48,19 @@ const Footer = () => {
                   </li>
                 ))}
               </ul>
-            </motion.div>
+            </div>
           ))}
-        </motion.div>
-      </motion.div>
+        </div>
+      </div>
 
       {/* Divider */}
-      <motion.div
+      <div
         className="border-t border-gray-800 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4"
-        initial={{ opacity: 0, y: 15 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.1 }}
-        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
+
       >
         {/* Social icons */}
-        <motion.div
+        <div
           className="flex items-center gap-3"
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.1 }}
-          transition={{ duration: 0.4, delay: 0.3 }}
         >
           <Link href="#" className="bg-gray-800 hover:bg-gray-700 text-white p-2 rounded-lg transition-colors">
             <FaFacebook size={16} />
@@ -107,23 +74,19 @@ const Footer = () => {
           <Link href="#" className="bg-gray-800 hover:bg-gray-700 text-white p-2 rounded-lg transition-colors">
             <LiaLinkedin size={16} />
           </Link>
-        </motion.div>
+        </div>
 
         {/* Copyright & legal */}
-        <motion.div
+        <div
           className="flex flex-wrap items-center gap-4 text-xs text-gray-500"
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.1 }}
-          transition={{ duration: 0.4, delay: 0.35 }}
         >
           <span>Copyright 2026 — Hireloop</span>
           <Link href="#" className="text-gray-300 hover:text-white transition-colors">Terms & Policy</Link>
           <span>-</span>
           <Link href="#" className="text-gray-300 hover:text-white transition-colors">Privacy Guideline</Link>
-        </motion.div>
-      </motion.div>
-    </motion.footer>
+        </div>
+      </div>
+    </footer>
   );
 };
 

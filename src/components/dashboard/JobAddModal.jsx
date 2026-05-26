@@ -74,7 +74,7 @@ export function JobAddModal({ companies }) {
                   <Select
                     className="w-full"
                     name="company"
-                    placeholder="Select category"
+                    placeholder="Select company"
                     required
                   >
                     <Label>Select your company</Label>

@@ -40,13 +40,13 @@ const Navbar = () => {
 
       <ul className="flex gap-10 py-2 text-sm items-center">
         <li>
-          <Link href={"/brows-jobs"}>Browse Jobs</Link>
+          <Link href={"/browse-jobs"}>Browse Jobs</Link>
         </li>
         <li>
-          <Link href={"/company"}>Company</Link>
+          <Link href={"/browse-company"}>Company</Link>
         </li>
         <li>
-          <Link href={"/company"}>Pricing</Link>
+          <Link href={"/pricing"}>Pricing</Link>
         </li>
 
         {user ? (

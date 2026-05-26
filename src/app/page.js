@@ -15,7 +15,7 @@ export default function Home() {
       <FeaturesSection />
       <PricingSection />
       <CallToAction />
-      <Footer />
+
     </div>
   );
 }
