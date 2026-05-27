@@ -30,12 +30,12 @@ export function CompanyAddModal({user}) {
     }
     const image = await imageUploader(formData.get("logo"));
 
-    await ApiClient("/company", "POST", {
+    await ApiClient({path: "/company", method: "POST", body: {
       ...companyData,
       status: "pending", // "approved", "pending", "rejected"
       logo: image?.url,
       userEmail: user.email,
-    });
+    }});
 
     toast.success("Company added and under review!");
   };

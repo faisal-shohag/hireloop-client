@@ -13,6 +13,7 @@ import { usePathname } from "next/navigation";
 const Navbar = () => {
   const { data: session } = authClient.useSession();
   const user = session?.user;
+  
   const pathname = usePathname();
 
   if (pathname?.startsWith("/dashboard")) {
@@ -108,6 +109,11 @@ const Navbar = () => {
                   </Dropdown.Menu>
                 </Dropdown.Popover>
               </Dropdown>
+            </li>
+
+            {/* add user.plan "free"/"pro" badge here */}
+            <li className="text-xs font-semibold px-2.5 py-0.5 bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800/40 rounded-lg">
+              {user?.plan || "free"}
             </li>
             {/* <li>
               <Button size="sm" onClick={handleSignOut} variant="danger">

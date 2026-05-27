@@ -31,11 +31,11 @@ export function JobAddModal({ companies }) {
     }
 
     try {
-      await ApiClient("/jobs", "POST", {
+      await ApiClient({path: "/jobs", method: "POST", body:{
         ...jobData,
         userEmail: user?.email,
         createdAt: new Date().toISOString(),
-      });
+      }});
 
       toast.success("Job position posted successfully!");
     } catch (error) {

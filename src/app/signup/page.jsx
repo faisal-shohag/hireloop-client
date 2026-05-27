@@ -37,7 +37,8 @@ export default function SignupPage() {
                 email,
                 password,
                 name,
-                role, // Payload value captures "seeker" or "recruiter"
+                role, 
+                plan: "free",
                 callbackURL: "/",
             });
 
@@ -73,7 +74,7 @@ export default function SignupPage() {
                     {/* Name Field */}
                     <TextField isRequired name="name" className="flex flex-col gap-1.5">
                         <Label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">Name</Label>
-                        <InputGroup className="flex items-center gap-2 border border-zinc-200 dark:border-zinc-800 rounded-xl px-3 bg-zinc-50 dark:bg-zinc-900 focus-within:border-primary transition-colors">
+                        <InputGroup>
                             <Person className="text-zinc-400 pointer-events-none" size={16} />
                             <Input
                                 type="text"
@@ -175,7 +176,7 @@ export default function SignupPage() {
                     {/* Navigation Option */}
                     <div className="text-center pt-4 border-t border-zinc-100 dark:border-zinc-800 mt-2 text-sm text-zinc-600 dark:text-zinc-400">
                         Already have an account?{" "}
-                        <Link href="/auth/signin" className="font-medium cursor-pointer text-sm text-blue-600 dark:text-blue-400">
+                        <Link href="/signin" className="font-medium cursor-pointer text-sm text-blue-600 dark:text-blue-400">
                             Sign in instead
                         </Link>
                     </div>

@@ -19,24 +19,25 @@ import {
 
 export default function SignInPage() {
   const router = useRouter();
-  const [form, setForm] = useState({ email: "", password: "" });
   const [showPw, setShowPw] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const user = Object.fromEntries(formData.entries());
     setError("");
     setLoading(true);
     try {
       const result = await signIn.email({
-        email: form.email,
-        password: form.password,
+        email: user.email,
+        password: user.password,
       });
       if (result.error) {
         setError(result.error.message || "Invalid credentials");
       } else {
-        router.push("/dashboard");
+        router.push("/");
       }
     } catch (err) {
       setError(err.message || "Sign in failed");
@@ -71,18 +72,7 @@ export default function SignInPage() {
         </div>
 
         <Card className="border">
-          <Form
-            className="flex flex-col gap-4 w-full"
-            onSubmit={(e) => {
-              e.preventDefault();
-              const formData = new FormData(e.currentTarget);
-              setForm({
-                email: formData.get("email"),
-                password: formData.get("password"),
-              });
-              handleSubmit(e);
-            }}
-          >
+          <Form className="flex flex-col gap-4 w-full" onSubmit={handleSubmit}>
             {error && (
               <div className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400">
                 {error}
@@ -110,7 +100,6 @@ export default function SignInPage() {
               minLength={8}
               name="password"
               placeholder="Enter password"
-            
               validate={(value) => {
                 if (value.length < 8) {
                   return "Password must be at least 8 characters";
@@ -128,8 +117,7 @@ export default function SignInPage() {
               <div className="relative flex gap-2 w-full">
                 <Input
                   className={"w-full"}
-               
-                   type={showPw ? "text" : "password"}
+                  type={showPw ? "text" : "password"}
                 />
                 <Button type="button" onClick={() => setShowPw(!showPw)}>
                   {showPw ? (
@@ -164,7 +152,7 @@ export default function SignInPage() {
             <p className="text-center text-sm text-gray-500">
               Don&apos;t have an account?{" "}
               <Link
-                href="/auth/signup"
+                href="/signup"
                 className="text-indigo-400 hover:text-indigo-300 font-medium"
               >
                 Sign up

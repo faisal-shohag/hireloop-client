@@ -10,11 +10,20 @@ export const ApiServer = async (path, method = "GET", body = {}) => {
       ? { body: JSON.stringify(body) }
       : {}),
   });
-  const data = await response.json();
+ try {
+   const data = await response.json();
 
   return {
     ok: response.ok,
     status: response.status,
     data,
   };
+ } catch (error) {
+  console.log(error)
+  return {
+    ok: false,
+    status: response.status,
+    data: null,
+  }
+ }
 };
