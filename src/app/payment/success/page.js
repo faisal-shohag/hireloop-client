@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import {
   CheckCircle2,
@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import { ApiClient } from "@/lib/api-client";
 
-export default function StripeClientPaymentSuccessPage() {
+function PaymentSuccess() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -173,5 +173,13 @@ export default function StripeClientPaymentSuccessPage() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function StripeClientPaymentSuccessPage() {
+  return (
+    <Suspense>
+      <PaymentSuccess />
+    </Suspense>
   );
 }

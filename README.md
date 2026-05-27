@@ -10,13 +10,13 @@ Framer Motion হলো React-এর জন্য একটি **animation libra
 ## ইনস্টলেশন
 
 ```bash
-npm install framer-motion
+npm install motion
 ```
 
 এই প্রজেক্টে ইতিমধ্যে `package.json`-এ add করা আছে:
 
 ```json
-"framer-motion": "^12.40.0"
+"motion": "^12.40.0"
 ```
 
 ---
@@ -24,7 +24,7 @@ npm install framer-motion
 ## Import করার নিয়ম
 
 ```jsx
-import { motion } from 'framer-motion';
+import { motion } from 'motion';
 ```
 
 `motion` হলো Framer Motion-এর মূল জিনিস। যেকোনো সাধারণ HTML tag-এর আগে `motion.` লাগালেই সেটা animate করা যায়।
